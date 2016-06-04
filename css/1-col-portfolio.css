@@ -4,21 +4,29 @@
  * For details, see http://www.apache.org/licenses/LICENSE-2.0.
  */
 
+html { 
+ position:relative; 
+ min-height:100%;
+}
 body {
     padding-top: 70px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+    height: 100%;
 }
-
 .img-responsive {
     border: 1px solid #d8d8d8;
 }
-
 .badge {
     background-color: #16a085;
 }
-
+main {
+    padding-bottom: 150px
+}
 footer {
     margin: 50px 0 0 0;
     height: 100px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
 }
 footer .text {
     line-height: 100px;
