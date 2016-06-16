@@ -7,14 +7,14 @@ var Footer = React.createClass({
 			<footer>
 				<div className="container-fluid">
 					<div className="row">
-						<div className="col-sm-4">
-							<p className="text pull-left">Copyright &copy; 2016 syidev.github.io </p>
+						<div className="hidden-xs hidden-sm col-sm-4 clearfix">
+							<p className="text text-left">Copyright &copy; 2016 syidev.github.io </p>
 						</div>
-						<div className="col-sm-4">
+						<div className="col-xs-6 col-sm-8 col-md-4">
 							<p className="text text-center">Powered by <a href="https://facebook.github.io/react/">React</a></p>
 						</div>
-						<div className="col-sm-4">
-							<p className="text pull-right">Last update: {this.props.update}</p>
+						<div className="col-xs-6 col-sm-4 clearfix">
+							<p className="text text-right">Last update: {this.props.update}</p>
 						</div>
 					</div>
 				</div>

@@ -19707,16 +19707,16 @@ var Footer = React.createClass({
 					{ className: 'row' },
 					React.createElement(
 						'div',
-						{ className: 'col-sm-4' },
+						{ className: 'hidden-xs hidden-sm col-sm-4 clearfix' },
 						React.createElement(
 							'p',
-							{ className: 'text pull-left' },
+							{ className: 'text text-left' },
 							'Copyright © 2016 syidev.github.io '
 						)
 					),
 					React.createElement(
 						'div',
-						{ className: 'col-sm-4' },
+						{ className: 'col-xs-6 col-sm-8 col-md-4' },
 						React.createElement(
 							'p',
 							{ className: 'text text-center' },
@@ -19730,10 +19730,10 @@ var Footer = React.createClass({
 					),
 					React.createElement(
 						'div',
-						{ className: 'col-sm-4' },
+						{ className: 'col-xs-6 col-sm-4 clearfix' },
 						React.createElement(
 							'p',
-							{ className: 'text pull-right' },
+							{ className: 'text text-right' },
 							'Last update: ',
 							this.props.update
 						)
