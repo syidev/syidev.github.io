@@ -11,10 +11,10 @@ var Page = React.createClass({
 		<main className="container-fluid">
 
 			{/* Page Heading */}
-			<Heading projects="13" />
+			<Heading projects="14" />
 
 			{/* Nav tabs */}
-			<Tabs markup="5" javascript="3" react="0" angular="1" node="1" dotnet="3" />
+			<Tabs markup="5" javascript="3" react="0" angular="2" node="1" dotnet="3" />
 			<br />
 
 			{/* Tab panes */}
@@ -46,14 +46,14 @@ var Page = React.createClass({
 					<Project path="https://syidev.github.io/Photo" 
 							 img="img/photo.png" 
 							 name="Photo" 
-							 tecnology="HTML5, CSS3, Bootstrap 3"
+							 tecnology="HTML5, CSS3, SCSS, Bootstrap 3, Gulp, Bower"
 							 description="Template"
 							 git="https://github.com/syidev/Photo" />
 					<hr />
 					<Project path="https://syidev.github.io/test" 
 							 img="img/test-layout.png" 
 							 name="Test" 
-							 tecnology="JavaScript, HTML5, CSS3, Bootstrap 3"
+							 tecnology="HTML5, CSS3, JavaScript, jQuery"
 							 description="Responsive template"
 							 git="https://github.com/syidev/test" />
 					<hr />
@@ -94,6 +94,12 @@ var Page = React.createClass({
 							 name="Puzzle App" 
 							 tecnology="Angular 2, TypeScript" 
 							 description="Game" git="https://github.com/syidev/Puzzle-App" />
+				<hr />
+					<Project path="" 
+							 img="img/input-conformation.png" 
+							 name="Input Confirmation" 
+							 tecnology="Angular 2, TypeScript" 
+							 description="Input Confirmation" git="https://github.com/syidev/Input-Confirmation" />
 				</div>
 
 				{/* Node.js */}

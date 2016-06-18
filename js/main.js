@@ -19845,8 +19845,8 @@ var Page = React.createClass({
 				return React.createElement(
 						'main',
 						{ className: 'container-fluid' },
-						React.createElement(Heading, { projects: '13' }),
-						React.createElement(Tabs, { markup: '5', javascript: '3', react: '0', angular: '1', node: '1', dotnet: '3' }),
+						React.createElement(Heading, { projects: '14' }),
+						React.createElement(Tabs, { markup: '5', javascript: '3', react: '0', angular: '2', node: '1', dotnet: '3' }),
 						React.createElement('br', null),
 						React.createElement(
 								'div',
@@ -19878,14 +19878,14 @@ var Page = React.createClass({
 										React.createElement(Project, { path: 'https://syidev.github.io/Photo',
 												img: 'img/photo.png',
 												name: 'Photo',
-												tecnology: 'HTML5, CSS3, Bootstrap 3',
+												tecnology: 'HTML5, CSS3, SCSS, Bootstrap 3, Gulp, Bower',
 												description: 'Template',
 												git: 'https://github.com/syidev/Photo' }),
 										React.createElement('hr', null),
 										React.createElement(Project, { path: 'https://syidev.github.io/test',
 												img: 'img/test-layout.png',
 												name: 'Test',
-												tecnology: 'JavaScript, HTML5, CSS3, Bootstrap 3',
+												tecnology: 'HTML5, CSS3, JavaScript, jQuery',
 												description: 'Responsive template',
 												git: 'https://github.com/syidev/test' }),
 										React.createElement('hr', null)
@@ -19922,7 +19922,13 @@ var Page = React.createClass({
 												img: 'img/puzzle-app.png',
 												name: 'Puzzle App',
 												tecnology: 'Angular 2, TypeScript',
-												description: 'Game', git: 'https://github.com/syidev/Puzzle-App' })
+												description: 'Game', git: 'https://github.com/syidev/Puzzle-App' }),
+										React.createElement('hr', null),
+										React.createElement(Project, { path: '',
+												img: 'img/input-conformation.png',
+												name: 'Input Confirmation',
+												tecnology: 'Angular 2, TypeScript',
+												description: 'Input Confirmation', git: 'https://github.com/syidev/Input-Confirmation' })
 								),
 								React.createElement(
 										'div',
@@ -20043,7 +20049,7 @@ var Tabs = React.createClass({
 																React.createElement(
 																				'a',
 																				{ href: '#javascript', 'aria-controls': 'javascript', role: 'tab', 'data-toggle': 'tab' },
-																				'JavaScript ',
+																				'JS, jQuery ',
 																				React.createElement(
 																								'span',
 																								{ className: 'badge' },
@@ -20123,6 +20129,6 @@ var Footer = require('./components/Footer.jsx');
 
 ReactDOM.render(React.createElement(Page, null), document.getElementById('page'));
 ReactDOM.render(React.createElement(Navigation, null), document.getElementById('navigation'));
-ReactDOM.render(React.createElement(Footer, { update: 'June, 16' }), document.getElementById('footer'));
+ReactDOM.render(React.createElement(Footer, { update: 'June, 18' }), document.getElementById('footer'));
 
 },{"./components/Footer.jsx":168,"./components/Navigation.jsx":170,"./components/Page.jsx":171,"react":167,"react-dom":29}]},{},[174]);

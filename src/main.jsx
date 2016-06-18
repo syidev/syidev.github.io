@@ -8,4 +8,4 @@ var Footer = require('./components/Footer.jsx');
 
 ReactDOM.render(<Page />, document.getElementById('page'));
 ReactDOM.render(<Navigation />, document.getElementById('navigation'));
-ReactDOM.render(<Footer update="June, 16" />, document.getElementById('footer'));
+ReactDOM.render(<Footer update="June, 18" />, document.getElementById('footer'));
