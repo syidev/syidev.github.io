@@ -1,5 +1,7 @@
 var React = require('react');
 
+var Link = require ('react-router').Link;
+
 var Navigation = React.createClass({
 	render: function() {
 		return (
@@ -19,7 +21,7 @@ var Navigation = React.createClass({
 					<div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						<ul className="nav navbar-nav">
 							<li>
-								{/*<a href="/resume.html"><span className="glyphicon glyphicon-file" aria-hidden="true"></span>My resume</a>*/}
+								<Link to="resume" activeClassName="active"><span className="glyphicon glyphicon-file" aria-hidden="true"></span>Resume</Link>
 							</li>
 							<li>
 								{/*<a href="/hardware.html"><span className="glyphicon glyphicon-cog" aria-hidden="true"></span>Hardware</a>*/}

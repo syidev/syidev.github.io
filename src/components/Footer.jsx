@@ -1,5 +1,7 @@
 var React = require ('react');
 
+var update = "June, 27"
+
 var Footer = React.createClass({
     displayName: '',
     render() {
@@ -14,7 +16,7 @@ var Footer = React.createClass({
 							<p className="text text-center">Powered by <a href="https://facebook.github.io/react/">React</a></p>
 						</div>
 						<div className="col-xs-6 col-sm-4 clearfix">
-							<p className="text text-right">Last update: {this.props.update}</p>
+							<p className="text text-right">Last update: {update}</p>
 						</div>
 					</div>
 				</div>

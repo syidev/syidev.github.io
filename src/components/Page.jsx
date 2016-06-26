@@ -56,7 +56,6 @@ var Page = React.createClass({
 							 tecnology="HTML5, CSS3, JavaScript, jQuery"
 							 description="Responsive template"
 							 git="https://github.com/syidev/test" />
-					<hr />
 				</div>
 
 				{/* JavaScript */}
