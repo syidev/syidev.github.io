@@ -2,6 +2,9 @@ var React = require('react');
 
 var Resume = React.createClass({
     displayName: '',
+    componentDidMount: function() {
+        document.title = "resume | syidev";
+    },
     render() {
         return (
             <main className="container-fluid">
@@ -26,13 +29,14 @@ var Resume = React.createClass({
                             <li>HTML5</li>
                             <li>CSS3</li>
                             <li>Bootstrap</li>
-                            <li>CMS: DLE</li>
+                            <li>CMS: HostCMS, DLE</li>
                             <li>Gulp</li>
                             <li>Bower</li>
                             <li>SCSS</li>
                             <li>JavaScript</li>
                             <li>jQuery</li>
                             <li>Git</li>
+                            <li>React</li>
                         </ul>
                         <h3><b>Education:</b></h3>
                         <span>Kremenchuk Mykhailo Ostrogradskyi National University</span>

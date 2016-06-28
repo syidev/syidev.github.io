@@ -25065,9 +25065,15 @@ var Base = require('./components/Base.jsx');
 var Resume = require('./components/Resume.jsx');
 var Page = require('./components/Page.jsx');
 
+var CreateHistory = require('history/lib/createHashHistory');
+
+var History = new CreateHistory({
+    queryKey: false
+});
+
 var Routes = React.createElement(
     Router,
-    { history: hashHistory },
+    { history: History },
     React.createElement(
         Route,
         { path: '/', component: Base },
@@ -25078,7 +25084,7 @@ var Routes = React.createElement(
 
 module.exports = Routes;
 
-},{"./components/Base.jsx":231,"./components/Page.jsx":235,"./components/Resume.jsx":237,"react":227,"react-router":81}],231:[function(require,module,exports){
+},{"./components/Base.jsx":231,"./components/Page.jsx":235,"./components/Resume.jsx":237,"history/lib/createHashHistory":38,"react":227,"react-router":81}],231:[function(require,module,exports){
 var React = require('react');
 
 var Navigation = require('./Navigation.jsx');
@@ -25105,7 +25111,7 @@ module.exports = Base;
 },{"./Footer.jsx":232,"./Navigation.jsx":234,"./Page.jsx":235,"./Resume.jsx":237,"react":227}],232:[function(require,module,exports){
 var React = require('react');
 
-var update = "June, 27";
+var update = "June, 28";
 
 var Footer = React.createClass({
 	displayName: '',
@@ -25266,12 +25272,15 @@ var Project = require('./Project.jsx');
 var Page = React.createClass({
 		displayName: 'Page',
 
+		componentDidMount: function () {
+				document.title = "syidev";
+		},
 		render: function () {
 				return React.createElement(
 						'main',
 						{ className: 'container-fluid' },
-						React.createElement(Heading, { projects: '14' }),
-						React.createElement(Tabs, { markup: '5', javascript: '3', react: '0', angular: '2', node: '1', dotnet: '3' }),
+						React.createElement(Heading, { projects: '15' }),
+						React.createElement(Tabs, { markup: '5', javascript: '3', react: '1', angular: '2', node: '1', dotnet: '3' }),
 						React.createElement('br', null),
 						React.createElement(
 								'div',
@@ -25338,7 +25347,16 @@ var Page = React.createClass({
 												description: 'Location manager',
 												git: 'https://github.com/syidev/test' })
 								),
-								React.createElement('div', { role: 'tabpanel', className: 'tab-pane', id: 'react' }),
+								React.createElement(
+										'div',
+										{ role: 'tabpanel', className: 'tab-pane', id: 'react' },
+										React.createElement(Project, { path: 'https://syidev.github.io/Exchange-Rates',
+												img: 'img/er.png',
+												name: 'Exchange-Rates',
+												tecnology: 'React, window.fetch polyfill, PrivatBank API',
+												description: 'Exchange-Rates',
+												git: 'https://github.com/syidev/Exchange-Rates' })
+								),
 								React.createElement(
 										'div',
 										{ role: 'tabpanel', className: 'tab-pane', id: 'angularjs' },
@@ -25449,6 +25467,9 @@ var React = require('react');
 
 var Resume = React.createClass({
     displayName: '',
+    componentDidMount: function () {
+        document.title = "resume | syidev";
+    },
     render() {
         return React.createElement(
             'main',
@@ -25534,7 +25555,7 @@ var Resume = React.createClass({
                         React.createElement(
                             'li',
                             null,
-                            'CMS: DLE'
+                            'CMS: HostCMS, DLE'
                         ),
                         React.createElement(
                             'li',
@@ -25565,6 +25586,11 @@ var Resume = React.createClass({
                             'li',
                             null,
                             'Git'
+                        ),
+                        React.createElement(
+                            'li',
+                            null,
+                            'React'
                         )
                     ),
                     React.createElement(

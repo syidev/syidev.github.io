@@ -5,16 +5,19 @@ var Heading = require('./Heading.jsx');
 var Project = require('./Project.jsx');
 
 var Page = React.createClass({
+	componentDidMount: function() {
+		document.title = "syidev";
+	},
 	render: function(){
 		return (
 
 		<main className="container-fluid">
 
 			{/* Page Heading */}
-			<Heading projects="14" />
+			<Heading projects="15" />
 
 			{/* Nav tabs */}
-			<Tabs markup="5" javascript="3" react="0" angular="2" node="1" dotnet="3" />
+			<Tabs markup="5" javascript="3" react="1" angular="2" node="1" dotnet="3" />
 			<br />
 
 			{/* Tab panes */}
@@ -84,7 +87,14 @@ var Page = React.createClass({
 				</div>
 
 				{/* React */}
-				<div role="tabpanel" className="tab-pane" id="react"></div>
+				<div role="tabpanel" className="tab-pane" id="react">
+					<Project path="https://syidev.github.io/Exchange-Rates"
+							 img="img/er.png"
+							 name="Exchange-Rates"
+							 tecnology="React, window.fetch polyfill, PrivatBank API"
+							 description="Exchange-Rates"
+							 git="https://github.com/syidev/Exchange-Rates" />
+				</div>
 
 				{/* AngularJS */}
 				<div role="tabpanel" className="tab-pane" id="angularjs">
