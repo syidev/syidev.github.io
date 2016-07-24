@@ -25479,7 +25479,7 @@ var Resume = React.createClass({
                 { className: 'row' },
                 React.createElement(
                     'div',
-                    { className: 'col-sm-8' },
+                    { className: 'col-sm-offset-2 col-sm-8' },
                     React.createElement(
                         'div',
                         { className: 'clearfix' },
@@ -25570,7 +25570,7 @@ var Resume = React.createClass({
                         React.createElement(
                             'li',
                             null,
-                            'SCSS'
+                            'SCSS/LESS'
                         ),
                         React.createElement(
                             'li',

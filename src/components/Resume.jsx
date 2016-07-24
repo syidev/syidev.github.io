@@ -9,7 +9,7 @@ var Resume = React.createClass({
         return (
             <main className="container-fluid">
                 <div className="row">
-                    <div className="col-sm-8">
+                    <div className="col-sm-offset-2 col-sm-8">
                         <div className="clearfix">
                             <h2 className="text-left pull-left">Savchenko Yaroslav</h2>
                             {/*<a className="btn btn-primary pull-right" href="files/Savchenko_Yaroslav_resume.pdf">Download resume <span class="glyphicon glyphicon-save-file"></span></a>*/}
@@ -32,7 +32,7 @@ var Resume = React.createClass({
                             <li>CMS: HostCMS, DLE</li>
                             <li>Gulp</li>
                             <li>Bower</li>
-                            <li>SCSS</li>
+                            <li>SCSS/LESS</li>
                             <li>JavaScript</li>
                             <li>jQuery</li>
                             <li>Git</li>
