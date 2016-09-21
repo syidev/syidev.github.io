@@ -21,7 +21,7 @@ var Navigation = React.createClass({
 					<div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						<ul className="nav navbar-nav">
 							<li>
-								<Link to="resume" activeClassName="active"><span className="glyphicon glyphicon-file" aria-hidden="true"></span>Resume</Link>
+								{/*<Link to="resume" activeClassName="active"><span className="glyphicon glyphicon-file" aria-hidden="true"></span>Resume</Link>*/}
 							</li>
 							<li>
 								{/*<a href="/hardware.html"><span className="glyphicon glyphicon-cog" aria-hidden="true"></span>Hardware</a>*/}

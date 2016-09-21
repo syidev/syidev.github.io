@@ -1,6 +1,6 @@
 var React = require ('react');
 
-var update = "June, 28"
+var update = "September, 21"
 
 var Footer = React.createClass({
     displayName: '',

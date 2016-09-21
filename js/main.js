@@ -25062,7 +25062,7 @@ var hashHistory = ReactRouter.hashHistory;
 var IndexRoute = ReactRouter.IndexRoute;
 
 var Base = require('./components/Base.jsx');
-var Resume = require('./components/Resume.jsx');
+// var Resume = require('./components/Resume.jsx');
 var Page = require('./components/Page.jsx');
 
 var CreateHistory = require('history/lib/createHashHistory');
@@ -25077,14 +25077,13 @@ var Routes = React.createElement(
     React.createElement(
         Route,
         { path: '/', component: Base },
-        React.createElement(IndexRoute, { component: Page }),
-        React.createElement(Route, { path: 'resume', component: Resume })
+        React.createElement(IndexRoute, { component: Page })
     )
 );
 
 module.exports = Routes;
 
-},{"./components/Base.jsx":231,"./components/Page.jsx":235,"./components/Resume.jsx":237,"history/lib/createHashHistory":38,"react":227,"react-router":81}],231:[function(require,module,exports){
+},{"./components/Base.jsx":231,"./components/Page.jsx":235,"history/lib/createHashHistory":38,"react":227,"react-router":81}],231:[function(require,module,exports){
 var React = require('react');
 
 var Navigation = require('./Navigation.jsx');
@@ -25111,7 +25110,7 @@ module.exports = Base;
 },{"./Footer.jsx":232,"./Navigation.jsx":234,"./Page.jsx":235,"./Resume.jsx":237,"react":227}],232:[function(require,module,exports){
 var React = require('react');
 
-var update = "June, 28";
+var update = "September, 21";
 
 var Footer = React.createClass({
 	displayName: '',
@@ -25237,16 +25236,7 @@ var Navigation = React.createClass({
 					React.createElement(
 						'ul',
 						{ className: 'nav navbar-nav' },
-						React.createElement(
-							'li',
-							null,
-							React.createElement(
-								Link,
-								{ to: 'resume', activeClassName: 'active' },
-								React.createElement('span', { className: 'glyphicon glyphicon-file', 'aria-hidden': 'true' }),
-								'Resume'
-							)
-						),
+						React.createElement('li', null),
 						React.createElement('li', null),
 						React.createElement(
 							'li',
@@ -25279,7 +25269,7 @@ var Page = React.createClass({
 				return React.createElement(
 						'main',
 						{ className: 'container-fluid' },
-						React.createElement(Heading, { projects: '15' }),
+						React.createElement(Heading, { projects: '12' }),
 						React.createElement(Tabs, { markup: '5', javascript: '3', react: '1', angular: '2', node: '1', dotnet: '3' }),
 						React.createElement('br', null),
 						React.createElement(
@@ -25730,34 +25720,6 @@ var Tabs = React.createClass({
 																								'span',
 																								{ className: 'badge' },
 																								this.props.react
-																				)
-																)
-												),
-												React.createElement(
-																'li',
-																{ role: 'presentation' },
-																React.createElement(
-																				'a',
-																				{ href: '#angularjs', 'aria-controls': 'angularjs', role: 'tab', 'data-toggle': 'tab' },
-																				'AngularJS ',
-																				React.createElement(
-																								'span',
-																								{ className: 'badge' },
-																								this.props.angular
-																				)
-																)
-												),
-												React.createElement(
-																'li',
-																{ role: 'presentation' },
-																React.createElement(
-																				'a',
-																				{ href: '#nodejs', 'aria-controls': 'nodejs', role: 'tab', 'data-toggle': 'tab' },
-																				'Node.js ',
-																				React.createElement(
-																								'span',
-																								{ className: 'badge' },
-																								this.props.node
 																				)
 																)
 												),

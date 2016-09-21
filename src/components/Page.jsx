@@ -14,7 +14,7 @@ var Page = React.createClass({
 		<main className="container-fluid">
 
 			{/* Page Heading */}
-			<Heading projects="15" />
+			<Heading projects="12" />
 
 			{/* Nav tabs */}
 			<Tabs markup="5" javascript="3" react="1" angular="2" node="1" dotnet="3" />
