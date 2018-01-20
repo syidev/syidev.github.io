@@ -53,32 +53,32 @@ var Page = React.createClass({
 							 description="Template"
 							 git="https://github.com/syidev/Photo" />
 					<hr />
-					<Project path="https://syidev.github.io/test" 
+					<Project path="https://syidev.github.io/Test" 
 							 img="img/test-layout.png" 
 							 name="Test" 
 							 tecnology="HTML5, CSS3, JavaScript, jQuery"
 							 description="Responsive template"
-							 git="https://github.com/syidev/test" />
+							 git="https://github.com/syidev/Test" />
 				</div>
 
 				{/* JavaScript */}
 
 				<div role="tabpanel" className="tab-pane" id="javascript">
-					<Project path="https://syidev.github.io/Contact-list" 
+					<Project path="https://syidev.github.io/contact_list" 
 							 img="img/contact-list.png" 
 							 name="Contact list" 
 							 tecnology="JavaScript, HTML5, CSS3, Bootstrap 3"
 							 description="Contact list with simple validation"
-							 git="https://github.com/syidev/Contact-list" />
+							 git="https://github.com/syidev/contact_list" />
 					<hr />
-					<Project path="https://syidev.github.io/Arithmetic-tester" 
+					<Project path="https://syidev.github.io/arithmetic_tester" 
 							 img="img/arithmetic-tester.png" 
 							 name="Arithmetic tester" 
 							 tecnology="JavaScript, HTML5, CSS3, Bootstrap 3"
 							 description="The app in JavaScript, to test knowledge of elementary arithmetic."
-							 git="https://github.com/syidev/Arithmetic-tester" />
+							 git="https://github.com/syidev/arithmetic_tester" />
 					<hr />
-					<Project path="https://syidev.github.io/test/locationmanager.html" 
+					<Project path="https://syidev.github.io/Test/locationmanager.html" 
 							 img="img/test-js.png" 
 							 name="Location manager" 
 							 tecnology="JavaScript, jQuery, HTML5, CSS3, Bootstrap 3"
@@ -88,37 +88,12 @@ var Page = React.createClass({
 
 				{/* React */}
 				<div role="tabpanel" className="tab-pane" id="react">
-					<Project path="https://syidev.github.io/Exchange-Rates"
+					<Project path="https://syidev.github.io/exchange_rates"
 							 img="img/er.png"
 							 name="Exchange-Rates"
 							 tecnology="React, window.fetch polyfill, PrivatBank API"
 							 description="Exchange-Rates"
-							 git="https://github.com/syidev/Exchange-Rates" />
-				</div>
-
-				{/* AngularJS */}
-				<div role="tabpanel" className="tab-pane" id="angularjs">
-					<Project path="" 
-							 img="img/puzzle-app.png" 
-							 name="Puzzle App" 
-							 tecnology="Angular 2, TypeScript" 
-							 description="Game" git="https://github.com/syidev/Puzzle-App" />
-				<hr />
-					<Project path="" 
-							 img="img/input-conformation.png" 
-							 name="Input Confirmation" 
-							 tecnology="Angular 2, TypeScript" 
-							 description="Input Confirmation" git="https://github.com/syidev/Input-Confirmation" />
-				</div>
-
-				{/* Node.js */}
-				<div role="tabpanel" className="tab-pane" id="nodejs">
-					<Project path="http://nodejs-syidev.rhcloud.com" 
-							 img="img/shopping_cart.png" 
-							 name="Shopping Cart (in progress)" 
-							 tecnology="Angular 2, TypeScript"
-							 description="Shop"
-							 git="" />
+							 git="https://github.com/syidev/exchange_rates" />
 				</div>
 
 				{/* C#/.NET */}
@@ -128,21 +103,21 @@ var Page = React.createClass({
 							 name="Arrays" 
 							 tecnology="C#, Visual Studio 2015"
 							 description="Console application to generate and sort two-dimensional array"
-							 git="https://github.com/syidev/Calculator" />
+							 git="https://github.com/syidev/arrays" />
 					<hr />
 					<Project path="" 
 							 img="img/calculator.png" 
 							 name="Calculator" 
 							 tecnology="C#, WPF, Visual Studio 2015"
 							 description="Calculator"
-							 git="https://github.com/syidev/Shopping-Cart" />
+							 git="https://github.com/syidev/calculator" />
 					<hr />
 					<Project path="" 
 							 img="img/blackjack.png" 
 							 name="Blackjack" 
 							 tecnology="C#, Visual Studio 2015"
 							 description="Game"
-							 git="https://github.com/syidev/Blackjack" />
+							 git="https://github.com/syidev/blackjack" />
 				</div>
 			</div>
 		</main>
