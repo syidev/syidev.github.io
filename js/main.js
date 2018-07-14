@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 (function (process){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -272,6 +272,27 @@ function factory(ReactComponent, isValidElement, ReactNoopUpdateQueue) {
      */
     componentWillUnmount: 'DEFINE_MANY',
 
+    /**
+     * Replacement for (deprecated) `componentWillMount`.
+     *
+     * @optional
+     */
+    UNSAFE_componentWillMount: 'DEFINE_MANY',
+
+    /**
+     * Replacement for (deprecated) `componentWillReceiveProps`.
+     *
+     * @optional
+     */
+    UNSAFE_componentWillReceiveProps: 'DEFINE_MANY',
+
+    /**
+     * Replacement for (deprecated) `componentWillUpdate`.
+     *
+     * @optional
+     */
+    UNSAFE_componentWillUpdate: 'DEFINE_MANY',
+
     // ==== Advanced methods ====
 
     /**
@@ -285,6 +306,23 @@ function factory(ReactComponent, isValidElement, ReactNoopUpdateQueue) {
      * @overridable
      */
     updateComponent: 'OVERRIDE_BASE'
+  };
+
+  /**
+   * Similar to ReactClassInterface but for static methods.
+   */
+  var ReactClassStaticInterface = {
+    /**
+     * This method is invoked after a component is instantiated and when it
+     * receives new props. Return an object to update state in response to
+     * prop changes. Return null to indicate no change to state.
+     *
+     * If an object is returned, its keys will be merged into the existing state.
+     *
+     * @return {object || null}
+     * @optional
+     */
+    getDerivedStateFromProps: 'DEFINE_MANY_MERGED'
   };
 
   /**
@@ -521,6 +559,7 @@ function factory(ReactComponent, isValidElement, ReactNoopUpdateQueue) {
     if (!statics) {
       return;
     }
+
     for (var name in statics) {
       var property = statics[name];
       if (!statics.hasOwnProperty(name)) {
@@ -537,14 +576,25 @@ function factory(ReactComponent, isValidElement, ReactNoopUpdateQueue) {
         name
       );
 
-      var isInherited = name in Constructor;
-      _invariant(
-        !isInherited,
-        'ReactClass: You are attempting to define ' +
-          '`%s` on your component more than once. This conflict may be ' +
-          'due to a mixin.',
-        name
-      );
+      var isAlreadyDefined = name in Constructor;
+      if (isAlreadyDefined) {
+        var specPolicy = ReactClassStaticInterface.hasOwnProperty(name)
+          ? ReactClassStaticInterface[name]
+          : null;
+
+        _invariant(
+          specPolicy === 'DEFINE_MANY_MERGED',
+          'ReactClass: You are attempting to define ' +
+            '`%s` on your component more than once. This conflict may be ' +
+            'due to a mixin.',
+          name
+        );
+
+        Constructor[name] = createMergedResultFunction(Constructor[name], property);
+
+        return;
+      }
+
       Constructor[name] = property;
     }
   }
@@ -852,6 +902,12 @@ function factory(ReactComponent, isValidElement, ReactNoopUpdateQueue) {
         !Constructor.prototype.componentWillRecieveProps,
         '%s has a method called ' +
           'componentWillRecieveProps(). Did you mean componentWillReceiveProps()?',
+        spec.displayName || 'A component'
+      );
+      warning(
+        !Constructor.prototype.UNSAFE_componentWillRecieveProps,
+        '%s has a method called UNSAFE_componentWillRecieveProps(). ' +
+          'Did you mean UNSAFE_componentWillReceiveProps()?',
         spec.displayName || 'A component'
       );
     }
@@ -3846,12 +3902,10 @@ module.exports = function hoistNonReactStatics(targetComponent, sourceComponent,
 },{}],46:[function(require,module,exports){
 (function (process){
 /**
- * Copyright 2013-2015, Facebook, Inc.
- * All rights reserved.
+ * Copyright (c) 2013-present, Facebook, Inc.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
 'use strict';
@@ -4187,11 +4241,24 @@ process.umask = function() { return 0; };
 
 'use strict';
 
+var printWarning = function() {};
+
 if (process.env.NODE_ENV !== 'production') {
-  var invariant = require('fbjs/lib/invariant');
-  var warning = require('fbjs/lib/warning');
   var ReactPropTypesSecret = require('./lib/ReactPropTypesSecret');
   var loggedTypeFailures = {};
+
+  printWarning = function(text) {
+    var message = 'Warning: ' + text;
+    if (typeof console !== 'undefined') {
+      console.error(message);
+    }
+    try {
+      // --- Welcome to debugging React ---
+      // This error was thrown as a convenience so that you can use this stack
+      // to find the callsite that caused this warning to fire.
+      throw new Error(message);
+    } catch (x) {}
+  };
 }
 
 /**
@@ -4216,12 +4283,29 @@ function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
         try {
           // This is intentionally an invariant that gets caught. It's the same
           // behavior as without this statement except with a better message.
-          invariant(typeof typeSpecs[typeSpecName] === 'function', '%s: %s type `%s` is invalid; it must be a function, usually from ' + 'the `prop-types` package, but received `%s`.', componentName || 'React class', location, typeSpecName, typeof typeSpecs[typeSpecName]);
+          if (typeof typeSpecs[typeSpecName] !== 'function') {
+            var err = Error(
+              (componentName || 'React class') + ': ' + location + ' type `' + typeSpecName + '` is invalid; ' +
+              'it must be a function, usually from the `prop-types` package, but received `' + typeof typeSpecs[typeSpecName] + '`.'
+            );
+            err.name = 'Invariant Violation';
+            throw err;
+          }
           error = typeSpecs[typeSpecName](values, typeSpecName, componentName, location, null, ReactPropTypesSecret);
         } catch (ex) {
           error = ex;
         }
-        warning(!error || error instanceof Error, '%s: type specification of %s `%s` is invalid; the type checker ' + 'function must return `null` or an `Error` but returned a %s. ' + 'You may have forgotten to pass an argument to the type checker ' + 'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' + 'shape all require an argument).', componentName || 'React class', location, typeSpecName, typeof error);
+        if (error && !(error instanceof Error)) {
+          printWarning(
+            (componentName || 'React class') + ': type specification of ' +
+            location + ' `' + typeSpecName + '` is invalid; the type checker ' +
+            'function must return `null` or an `Error` but returned a ' + typeof error + '. ' +
+            'You may have forgotten to pass an argument to the type checker ' +
+            'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' +
+            'shape all require an argument).'
+          )
+
+        }
         if (error instanceof Error && !(error.message in loggedTypeFailures)) {
           // Only monitor this failure once because there tends to be a lot of the
           // same error.
@@ -4229,7 +4313,9 @@ function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
 
           var stack = getStack ? getStack() : '';
 
-          warning(false, 'Failed %s type: %s%s', location, error.message, stack != null ? stack : '');
+          printWarning(
+            'Failed ' + location + ' type: ' + error.message + (stack != null ? stack : '')
+          );
         }
       }
     }
@@ -4239,7 +4325,7 @@ function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
 module.exports = checkPropTypes;
 
 }).call(this,require('_process'))
-},{"./lib/ReactPropTypesSecret":52,"_process":48,"fbjs/lib/invariant":20,"fbjs/lib/warning":27}],50:[function(require,module,exports){
+},{"./lib/ReactPropTypesSecret":52,"_process":48}],50:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -4271,13 +4357,31 @@ module.exports = function(isValidElement) {
 
 'use strict';
 
-var emptyFunction = require('fbjs/lib/emptyFunction');
-var invariant = require('fbjs/lib/invariant');
-var warning = require('fbjs/lib/warning');
 var assign = require('object-assign');
 
 var ReactPropTypesSecret = require('./lib/ReactPropTypesSecret');
 var checkPropTypes = require('./checkPropTypes');
+
+var printWarning = function() {};
+
+if (process.env.NODE_ENV !== 'production') {
+  printWarning = function(text) {
+    var message = 'Warning: ' + text;
+    if (typeof console !== 'undefined') {
+      console.error(message);
+    }
+    try {
+      // --- Welcome to debugging React ---
+      // This error was thrown as a convenience so that you can use this stack
+      // to find the callsite that caused this warning to fire.
+      throw new Error(message);
+    } catch (x) {}
+  };
+}
+
+function emptyFunctionThatReturnsNull() {
+  return null;
+}
 
 module.exports = function(isValidElement, throwOnDirectAccess) {
   /* global Symbol */
@@ -4421,12 +4525,13 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
       if (secret !== ReactPropTypesSecret) {
         if (throwOnDirectAccess) {
           // New behavior only for users of `prop-types` package
-          invariant(
-            false,
+          var err = new Error(
             'Calling PropTypes validators directly is not supported by the `prop-types` package. ' +
             'Use `PropTypes.checkPropTypes()` to call them. ' +
             'Read more at http://fb.me/use-check-prop-types'
           );
+          err.name = 'Invariant Violation';
+          throw err;
         } else if (process.env.NODE_ENV !== 'production' && typeof console !== 'undefined') {
           // Old behavior for people using React.PropTypes
           var cacheKey = componentName + ':' + propName;
@@ -4435,15 +4540,12 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
             // Avoid spamming the console because they are often not actionable except for lib authors
             manualPropTypeWarningCount < 3
           ) {
-            warning(
-              false,
+            printWarning(
               'You are manually calling a React.PropTypes validation ' +
-              'function for the `%s` prop on `%s`. This is deprecated ' +
+              'function for the `' + propFullName + '` prop on `' + componentName  + '`. This is deprecated ' +
               'and will throw in the standalone `prop-types` package. ' +
               'You may be seeing this warning due to a third-party PropTypes ' +
-              'library. See https://fb.me/react-warning-dont-call-proptypes ' + 'for details.',
-              propFullName,
-              componentName
+              'library. See https://fb.me/react-warning-dont-call-proptypes ' + 'for details.'
             );
             manualPropTypeCallCache[cacheKey] = true;
             manualPropTypeWarningCount++;
@@ -4487,7 +4589,7 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
   }
 
   function createAnyTypeChecker() {
-    return createChainableTypeChecker(emptyFunction.thatReturnsNull);
+    return createChainableTypeChecker(emptyFunctionThatReturnsNull);
   }
 
   function createArrayOfTypeChecker(typeChecker) {
@@ -4537,8 +4639,8 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
 
   function createEnumTypeChecker(expectedValues) {
     if (!Array.isArray(expectedValues)) {
-      process.env.NODE_ENV !== 'production' ? warning(false, 'Invalid argument supplied to oneOf, expected an instance of array.') : void 0;
-      return emptyFunction.thatReturnsNull;
+      process.env.NODE_ENV !== 'production' ? printWarning('Invalid argument supplied to oneOf, expected an instance of array.') : void 0;
+      return emptyFunctionThatReturnsNull;
     }
 
     function validate(props, propName, componentName, location, propFullName) {
@@ -4580,21 +4682,18 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
 
   function createUnionTypeChecker(arrayOfTypeCheckers) {
     if (!Array.isArray(arrayOfTypeCheckers)) {
-      process.env.NODE_ENV !== 'production' ? warning(false, 'Invalid argument supplied to oneOfType, expected an instance of array.') : void 0;
-      return emptyFunction.thatReturnsNull;
+      process.env.NODE_ENV !== 'production' ? printWarning('Invalid argument supplied to oneOfType, expected an instance of array.') : void 0;
+      return emptyFunctionThatReturnsNull;
     }
 
     for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
       var checker = arrayOfTypeCheckers[i];
       if (typeof checker !== 'function') {
-        warning(
-          false,
+        printWarning(
           'Invalid argument supplied to oneOfType. Expected an array of check functions, but ' +
-          'received %s at index %s.',
-          getPostfixForTypeWarning(checker),
-          i
+          'received ' + getPostfixForTypeWarning(checker) + ' at index ' + i + '.'
         );
-        return emptyFunction.thatReturnsNull;
+        return emptyFunctionThatReturnsNull;
       }
     }
 
@@ -4806,7 +4905,7 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
 };
 
 }).call(this,require('_process'))
-},{"./checkPropTypes":49,"./lib/ReactPropTypesSecret":52,"_process":48,"fbjs/lib/emptyFunction":12,"fbjs/lib/invariant":20,"fbjs/lib/warning":27,"object-assign":47}],52:[function(require,module,exports){
+},{"./checkPropTypes":49,"./lib/ReactPropTypesSecret":52,"_process":48,"object-assign":47}],52:[function(require,module,exports){
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
@@ -26265,12 +26364,12 @@ var Routes = React.createElement(
 module.exports = Routes;
 
 },{"./components/Base.jsx":248,"./components/Page.jsx":252,"history/lib/createHashHistory":36,"react":244,"react-router":210}],248:[function(require,module,exports){
-var React = require('react');
+const React = require('react');
 
-var Navigation = require('./Navigation.jsx');
-var Footer = require('./Footer.jsx');
-var Page = require('./Page.jsx');
-var Resume = require('./Resume.jsx');
+const Navigation = require('./Navigation.jsx');
+const Footer = require('./Footer.jsx');
+const Page = require('./Page.jsx');
+const Resume = require('./Resume.jsx');
 
 var Base = React.createClass({
     displayName: 'Base',
@@ -26289,11 +26388,11 @@ var Base = React.createClass({
 module.exports = Base;
 
 },{"./Footer.jsx":249,"./Navigation.jsx":251,"./Page.jsx":252,"./Resume.jsx":254,"react":244}],249:[function(require,module,exports){
-var React = require('react');
+const React = require('react');
 
-var update = "January, 21";
+const update = "July 14, 2018 ";
 
-var Footer = React.createClass({
+const Footer = React.createClass({
 	displayName: '',
 	render() {
 		return React.createElement(
@@ -26301,36 +26400,22 @@ var Footer = React.createClass({
 			null,
 			React.createElement(
 				'div',
-				{ className: 'container-fluid' },
+				{ className: 'container' },
 				React.createElement(
 					'div',
 					{ className: 'row' },
 					React.createElement(
 						'div',
-						{ className: 'hidden-xs hidden-sm col-sm-4 clearfix' },
+						{ className: 'hidden-xs hidden-sm col-sm-6 clearfix' },
 						React.createElement(
 							'p',
 							{ className: 'text text-left' },
-							'Copyright \xA9 2018 syidev.github.io '
+							'Copyright \xA9 syidev.github.io '
 						)
 					),
 					React.createElement(
 						'div',
-						{ className: 'col-xs-6 col-sm-8 col-md-4' },
-						React.createElement(
-							'p',
-							{ className: 'text text-center' },
-							'Powered by ',
-							React.createElement(
-								'a',
-								{ href: 'https://facebook.github.io/react/' },
-								'React'
-							)
-						)
-					),
-					React.createElement(
-						'div',
-						{ className: 'col-xs-6 col-sm-4 clearfix' },
+						{ className: 'col-xs-12 col-sm-6 clearfix' },
 						React.createElement(
 							'p',
 							{ className: 'text text-right' },
@@ -26389,25 +26474,13 @@ var Navigation = React.createClass({
 			{ className: 'navbar navbar-inverse navbar-fixed-top', role: 'navigation' },
 			React.createElement(
 				'div',
-				{ className: 'container-fluid' },
+				{ className: 'container' },
 				React.createElement(
 					'div',
 					{ className: 'navbar-header' },
 					React.createElement(
-						'button',
-						{ type: 'button', className: 'navbar-toggle', 'data-toggle': 'collapse', 'data-target': '#bs-example-navbar-collapse-1' },
-						React.createElement(
-							'span',
-							{ className: 'sr-only' },
-							'Toggle navigation'
-						),
-						React.createElement('span', { className: 'icon-bar' }),
-						React.createElement('span', { className: 'icon-bar' }),
-						React.createElement('span', { className: 'icon-bar' })
-					),
-					React.createElement(
 						'a',
-						{ className: 'navbar-brand', href: '#' },
+						{ className: 'navbar-brand' },
 						'SYIdev'
 					)
 				),
@@ -26449,7 +26522,7 @@ var Page = React.createClass({
 		render: function () {
 				return React.createElement(
 						'main',
-						{ className: 'container-fluid' },
+						{ className: 'container' },
 						React.createElement(Heading, { projects: '12' }),
 						React.createElement(Tabs, { markup: '5', javascript: '3', react: '1', angular: '2', node: '1', dotnet: '3' }),
 						React.createElement('br', null),
@@ -26563,47 +26636,48 @@ module.exports = Page;
 var React = require("react");
 
 var Project = React.createClass({
-	displayName: '',
-	render() {
-		return React.createElement(
-			"div",
-			{ className: "row" },
-			React.createElement(
-				"div",
-				{ className: "col-md-7" },
-				React.createElement(
-					"a",
-					{ href: this.props.path },
-					React.createElement("img", { className: "img-responsive", src: this.props.img, alt: "" })
-				)
-			),
-			React.createElement(
-				"div",
-				{ className: "col-md-5" },
-				React.createElement(
-					"h3",
-					null,
-					this.props.name
-				),
-				React.createElement(
-					"h6",
-					null,
-					this.props.tecnology
-				),
-				React.createElement(
-					"p",
-					null,
-					this.props.description
-				),
-				React.createElement(
-					"a",
-					{ className: "btn btn-primary", href: this.props.git },
-					"View Project ",
-					React.createElement("span", { className: "glyphicon glyphicon-chevron-right" })
-				)
-			)
-		);
-	}
+    displayName: '',
+    render() {
+        const path = !!this.props.path;
+        return React.createElement(
+            "div",
+            { className: "row" },
+            React.createElement(
+                "div",
+                { className: "col-md-7" },
+                path ? React.createElement(
+                    "a",
+                    { href: this.props.path },
+                    React.createElement("img", { className: "img-responsive", src: this.props.img, alt: "" })
+                ) : React.createElement("img", { className: "img-responsive", src: this.props.img, alt: "" })
+            ),
+            React.createElement(
+                "div",
+                { className: "col-md-5" },
+                React.createElement(
+                    "h3",
+                    null,
+                    this.props.name
+                ),
+                React.createElement(
+                    "h6",
+                    null,
+                    this.props.tecnology
+                ),
+                React.createElement(
+                    "p",
+                    null,
+                    this.props.description
+                ),
+                React.createElement(
+                    "a",
+                    { className: "btn btn-primary", href: this.props.git },
+                    "View Project ",
+                    React.createElement("span", { className: "glyphicon glyphicon-chevron-right" })
+                )
+            )
+        );
+    }
 });
 
 module.exports = Project;

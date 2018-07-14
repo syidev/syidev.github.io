@@ -3,12 +3,17 @@ var React = require ("react");
 var  Project = React.createClass({
     displayName: '',
     render() {
+		const isPath = !!this.props.path;
         return (
 			<div className="row">
 				<div className="col-md-7">
-					<a href={this.props.path}>
-						<img className="img-responsive" src={this.props.img} alt="" />
-					</a>
+                    {isPath ? (
+                        <a href={this.props.path}>
+                            <img className="img-responsive" src={this.props.img} alt="" />
+                        </a>
+                    ) : (
+                        <img className="img-responsive" src={this.props.img} alt="" />
+                    )}
 				</div>
 				<div className="col-md-5">
 					<h3>{this.props.name}</h3>

@@ -11,7 +11,7 @@ var Page = React.createClass({
 	render: function(){
 		return (
 
-		<main className="container-fluid">
+		<main className="container">
 
 			{/* Page Heading */}
 			<Heading projects="12" />

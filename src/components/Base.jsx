@@ -1,9 +1,9 @@
-var React = require ('react');
+const React = require ('react');
 
-var Navigation = require ('./Navigation.jsx');
-var Footer = require ('./Footer.jsx');
-var Page = require ('./Page.jsx');
-var Resume = require ('./Resume.jsx');
+const Navigation = require ('./Navigation.jsx');
+const Footer = require ('./Footer.jsx');
+const Page = require ('./Page.jsx');
+const Resume = require ('./Resume.jsx');
 
 
 var Base = React.createClass({
